@@ -2,7 +2,7 @@ import { validate } from "../validation/validation";
 import { registerUserValidation } from "../validation/user-validation";
 import { prismaClient } from "../app/database";
 import { ResponseError } from "../error/response-error";
-import bcrypt from bcrypt
+import bcrypt from "bcrypt";
 
 const register = async (request) => {
 	const user = validate(registerUserValidation, request);
@@ -17,7 +17,7 @@ const register = async (request) => {
 		throw new ResponseError(400, "username already exists");
 	}
 
-    user.password = await bcrypt.hash(user.password, 10)
+	user.password = await bcrypt.hash(user.password, 10)
 
 	return prismaClient.user.create({
 		data: user,
@@ -28,3 +28,7 @@ const register = async (request) => {
 	});
 
 };
+
+export default {
+	register
+}
