@@ -5,6 +5,8 @@ import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
 
 const register = async (request) => {
+	// Validasi input menggunakan Joi
+	// validate by joi
 	const user = validate(registerUserValidation, request);
 
 	const countUser = await prismaClient.user.count({
@@ -26,9 +28,8 @@ const register = async (request) => {
 			password: true,
 		},
 	});
-
 };
 
 export default {
-	register
-}
+	register,
+};
