@@ -1,4 +1,6 @@
 import express from "express";
+
+// Routes
 import { publicRouter } from "../route/public-api.js";
 
 import { errorMiddleware } from "../middleware/error-middleware.js";

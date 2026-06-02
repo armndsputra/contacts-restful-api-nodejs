@@ -1,13 +1,13 @@
 import { validate } from "../validation/validation.js";
-import { registerUserValidation } from "../validation/user-validation.js";
+import { registerValidation } from "../validation/register-validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
 
-const register = async (request) => {
+export const registerService = async (request) => {
 	// Validasi input menggunakan Joi
 	// validate by joi
-	const user = validate(registerUserValidation, request);
+	const user = validate(registerValidation, request);
 
 	const countUser = await prismaClient.user.count({
 		where: {
@@ -31,6 +31,3 @@ const register = async (request) => {
 	});
 };
 
-export default {
-	register,
-};
