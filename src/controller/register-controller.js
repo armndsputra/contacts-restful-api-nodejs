@@ -2,6 +2,8 @@ import { registerService} from "../service/register-service.js"; // imprt from s
 
 export const registerController = async (req, res, next) => {
 	try {
+		console.log(req.body);
+		// return
 		const result = await registerService(req.body);
 		// console.log(result);
 		res.status(200).json({
