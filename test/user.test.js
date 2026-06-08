@@ -14,6 +14,7 @@ describe("POST /api/register", () => {
 	});
 
 	it("should register a new user", async () => {
+		// Make a POST request to the registration endpoint
 		const response = await supertes(web).post("/api/register").send({
 			username: "adipati suryanegara",
 			password: "testpassword",
