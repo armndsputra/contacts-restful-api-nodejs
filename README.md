@@ -1,1 +1,5 @@
 DATABASE_URL="mysql://root:root@localhost:3306/db_phonebook"
+
+Route -> Controller -> Service
+
+Erros : Service ( ResponseError -> Middleware (Error-Middleware))

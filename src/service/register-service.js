@@ -1,8 +1,9 @@
+import bcrypt from "bcrypt";
+
 import { validate } from "../validation/validation.js";
 import { registerValidation } from "../validation/register-validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
-import bcrypt from "bcrypt";
 
 export const registerService = async (request) => {
 	// Validasi input menggunakan Joi
@@ -30,4 +31,3 @@ export const registerService = async (request) => {
 		},
 	});
 };
-
