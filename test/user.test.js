@@ -1,19 +1,13 @@
 import supertes from "supertest";
 import { web } from "../src/app/web.js";
 import { logger } from "../src/app/logging.js";
-import { prismaClient } from "../src/app/database.js";
+
+ import { removeTest } from "./test-util.js";
 
 
 describe("POST /api/register", () => {
 
-	afterEach(async () => {
-		// Clean up the test user after each test
-		await prismaClient.user.deleteMany({
-			where: {
-				username: "adipati suryanegara",
-			},
-		});
-	});
+	
 
 	it("should register a new user", async () => {
 		// Make a POST request to the registration endpoint
@@ -74,6 +68,12 @@ describe("POST /api/register", () => {
 		// keyword errors in middle of response body
 		expect(response.body.errors).toBeDefined();
 
+	});
+
+	afterEach(async () => {
+		// Clean up the test user after each test
+		await removeTest();
+		console.log("Test user removed");
 	});
 
 });
