@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
 import { validate } from "../validation/validation.js";
-import { registerValidation } from "../validation/user-validation.js";
+import { registerValidation, loginValidation } from "../validation/user-validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { v4 as uuidv4 } from 'uuid';
@@ -39,8 +39,8 @@ export const registerService = async (request) => {
 
 export const loginService = async (request) => {
 	// Validasi input menggunakan Joi
-	const user = validate(registerValidation, request);
-
+	const user = validate(loginValidation, request);
+	// console.log(user);
 	const findUser = await prismaClient.user.findUnique({
 		where: {
 			username: user.username,
