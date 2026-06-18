@@ -102,7 +102,7 @@ describe("POST /api/login", () => {
 
 		expect(response.status).toBe(200);
 		expect(response.body.data.token).toBeDefined();
-
+		expect(response.body.data.token).not.toBe("testtoken");
 	});
 
 	// test login with invalid credentials
@@ -117,6 +117,7 @@ describe("POST /api/login", () => {
 
 		expect(response.status).toBe(400);
 		expect(response.body.errors).toBeDefined();
+		
 	});
 
 	// test login with invalid password
@@ -130,6 +131,7 @@ describe("POST /api/login", () => {
 
 		expect(response.status).toBe(401);
 		expect(response.body.errors).toBeDefined();
+		
 	});
 
 
