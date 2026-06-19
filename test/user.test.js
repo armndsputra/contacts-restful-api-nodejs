@@ -2,13 +2,9 @@ import supertes from "supertest";
 import { web } from "../src/app/web.js";
 import { logger } from "../src/app/logging.js";
 
- import { removeTest, createTestUser } from "./test-util.js";
-
+import { removeTest, createTestUser } from "./test-util.js";
 
 describe("POST /api/register", () => {
-
-	
-
 	it("should register a new user", async () => {
 		// Make a POST request to the registration endpoint
 		const response = await supertes(web).post("/api/register").send({
@@ -67,7 +63,6 @@ describe("POST /api/register", () => {
 		expect(response.status).toBe(400);
 		// keyword errors in middle of response body
 		expect(response.body.errors).toBeDefined();
-
 	});
 
 	afterEach(async () => {
@@ -75,11 +70,9 @@ describe("POST /api/register", () => {
 		await removeTest();
 		// console.log("Test user removed");
 	});
-
 });
 
 describe("POST /api/login", () => {
-
 	beforeEach(async () => {
 		await createTestUser();
 	});
@@ -97,7 +90,7 @@ describe("POST /api/login", () => {
 			password: "testpassword",
 		});
 
-		console.log("------------------------------");
+		// console.log("------------------------------");
 		logger.info("Response Login: ", response.body);
 
 		expect(response.status).toBe(200);
@@ -113,11 +106,10 @@ describe("POST /api/login", () => {
 		});
 
 		logger.info("Response Login: ", response.body);
-		console.log(response.status);
+		// console.log(response.status);
 
 		expect(response.status).toBe(400);
 		expect(response.body.errors).toBeDefined();
-		
 	});
 
 	// test login with invalid password
@@ -131,8 +123,33 @@ describe("POST /api/login", () => {
 
 		expect(response.status).toBe(401);
 		expect(response.body.errors).toBeDefined();
-		
+	});
+});
+
+describe("GET /api/users/current", () => {
+
+	beforeEach(async () => {
+		await createTestUser();
 	});
 
+	afterEach(async () => {
+		// Clean up the test user after each test
+		await removeTest();
+		// console.log("Test user removed");
+	});
 
-})
+	it("should return the current user", async () => {
+		const response = await supertes(web)
+			.get("/api/users/current")
+			.set("Authorization", "testtoken");
+
+			logger.info("Response Current User: ", response.body);
+			// console.log("Response Current User: ", response.body);
+
+			expect(response.status).toBe(200);
+			expect(response.body.data.username).toBe("adipati");
+			expect(response.body.data.name).toBe("Adipati Suryanegara");
+
+			
+	});
+});

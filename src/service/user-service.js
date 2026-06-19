@@ -1,10 +1,14 @@
 import bcrypt from "bcrypt";
 
 import { validate } from "../validation/validation.js";
-import { registerValidation, loginValidation } from "../validation/user-validation.js";
+import {
+	registerValidation,
+	loginValidation,
+	getUserValidation,
+} from "../validation/user-validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export const registerService = async (request) => {
 	// Validasi input menggunakan Joi
@@ -33,12 +37,9 @@ export const registerService = async (request) => {
 	});
 };
 
-
-
-
-
 export const loginService = async (request) => {
 	// Validasi input menggunakan Joi
+	// console.log("request: ", request);
 	const user = validate(loginValidation, request);
 	// console.log(user);
 	const findUser = await prismaClient.user.findUnique({
@@ -51,7 +52,10 @@ export const loginService = async (request) => {
 		throw new ResponseError(401, "invalid username or password");
 	}
 
-	const isPasswordValid = await bcrypt.compare(user.password, findUser.password);
+	const isPasswordValid = await bcrypt.compare(
+		user.password,
+		findUser.password,
+	);
 
 	if (!isPasswordValid) {
 		throw new ResponseError(401, "invalid username or password");
@@ -68,10 +72,32 @@ export const loginService = async (request) => {
 		},
 		select: {
 			token: true,
-		}
+		},
 	});
 
 	return {
 		token,
 	};
+};
+
+export const getUserByTokenService = async (username) => {
+
+	// console.log("username: ", username);
+	const user = validate(getUserValidation, {username}); // kirim object dengan key username agar sesuai dengan skema validasi
+
+	const findUser = await prismaClient.user.findUnique({
+		where: {
+			username: user.username,
+		},
+		select: {
+			username: true,
+			name: true,
+		},
+	});
+
+	if (!findUser) {
+		throw new ResponseError(401, "invalid token");
+	}
+
+	return findUser;
 };
