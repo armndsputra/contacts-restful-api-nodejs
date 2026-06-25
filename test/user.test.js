@@ -126,8 +126,8 @@ describe("POST /api/login", () => {
 	});
 });
 
+// testing get current user with token
 describe("GET /api/users/current", () => {
-
 	beforeEach(async () => {
 		await createTestUser();
 	});
@@ -143,13 +143,24 @@ describe("GET /api/users/current", () => {
 			.get("/api/users/current")
 			.set("Authorization", "testtoken");
 
-			logger.info("Response Current User: ", response.body);
-			// console.log("Response Current User: ", response.body);
+		logger.info("Response Current User: ", response.body);
+		// console.log("Response Current User: ", response.body);
 
-			expect(response.status).toBe(200);
-			expect(response.body.data.username).toBe("adipati");
-			expect(response.body.data.name).toBe("Adipati Suryanegara");
+		expect(response.status).toBe(200);
+		expect(response.body.data.username).toBe("adipati");
+		expect(response.body.data.name).toBe("Adipati Suryanegara");
+	});
 
-			
+	// test get current user with invalid token
+	it("should reject if token is invalid", async () => {
+		const response = await supertes(web)
+			.get("/api/users/current")
+			.set("Authorization", "invalidtoken");
+
+		logger.info("Response Current User: ", response.body);
+		// console.log("Response Current User: ", response.body);
+
+		expect(response.status).toBe(401);
+		expect(response.body.errors).toBeDefined();
 	});
 });

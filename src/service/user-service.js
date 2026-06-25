@@ -80,7 +80,7 @@ export const loginService = async (request) => {
 	};
 };
 
-export const getUserByTokenService = async (username) => {
+export const getUserByUsernameService = async (username) => {
 
 	// console.log("username: ", username);
 	const user = validate(getUserValidation, {username}); // kirim object dengan key username agar sesuai dengan skema validasi
@@ -96,7 +96,7 @@ export const getUserByTokenService = async (username) => {
 	});
 
 	if (!findUser) {
-		throw new ResponseError(401, "invalid token");
+		throw new ResponseError(404, "user not found");
 	}
 
 	return findUser;
