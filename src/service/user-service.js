@@ -5,7 +5,9 @@ import {
 	registerValidation,
 	loginValidation,
 	getUserValidation,
+	updateUserValidation,
 } from "../validation/user-validation.js";
+
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { v4 as uuidv4 } from "uuid";
@@ -100,4 +102,39 @@ export const getUserByUsernameService = async (username) => {
 	}
 
 	return findUser;
+};
+
+export const updateUserService = async (request) => {
+	// Validasi input menggunakan Joi
+	const user = validate(updateUserValidation, request);
+
+	const totalUser = await prismaClient.user.count({
+		where: {
+			username: user.username,
+		},
+	});
+
+	if (totalUser !== 1) {
+		throw new ResponseError(404, "user not found");
+	}
+
+	const updateData = {};
+	
+	if (user.name) {
+		updateData.name = user.name;
+	}
+	if (user.password) {
+		updateData.password = await bcrypt.hash(user.password, 10);
+	}
+
+	return prismaClient.user.update({
+		where: {
+			username: user.username,
+		},
+		data: updateData,
+		select: {
+			username: true,
+			name: true,
+		},
+	});
 };

@@ -2,6 +2,7 @@ import {
 	registerService,
 	loginService,
 	getUserByUsernameService,
+	updateUserService,
 } from "../service/user-service.js"; // imprt from service folder
 
 export const registerController = async (req, res, next) => {
@@ -34,6 +35,21 @@ export const getUserController = async (req, res, next) => {
 		const username = req.user.username;
 		const result = await getUserByUsernameService(username);
 		// console.log("result: ", result);
+		res.status(200).json({
+			data: result,
+		});
+	} catch (error) {
+		return next(error);
+	}
+};
+
+export const updateUserController = async (req, res, next) => {
+	try {
+		const username = req.user.username;
+		const request = req.body
+		request.username = username;
+		// console.log("request: ", request);
+		const result = await updateUserService(request);
 		res.status(200).json({
 			data: result,
 		});

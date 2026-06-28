@@ -1,8 +1,10 @@
 import supertes from "supertest";
+import bcrypt from "bcrypt";
+
 import { web } from "../src/app/web.js";
 import { logger } from "../src/app/logging.js";
 
-import { removeTest, createTestUser } from "./test-util.js";
+import { removeTest, createTestUser, getTestUser } from "./test-util.js";
 
 describe("POST /api/register", () => {
 	it("should register a new user", async () => {
@@ -163,4 +165,76 @@ describe("GET /api/users/current", () => {
 		expect(response.status).toBe(401);
 		expect(response.body.errors).toBeDefined();
 	});
+});
+
+
+// update current user with token
+describe("PATCH /api/users/current", () => {
+	beforeEach(async () => {
+		await createTestUser();
+	});
+
+	afterEach(async () => {
+		// Clean up the test user after each test
+		await removeTest();
+		// console.log("Test user removed");
+	});
+
+	it("should update the current name and password", async () => {
+		const response = await supertes(web)
+			.patch("/api/users/current")
+			.set("Authorization", "testtoken")
+			.send({
+				name: "Adipati Suryanegara Updated",
+				password: "newpassword",
+			});
+
+		logger.info("Response Update User: ", response.body);
+		// console.log("Response Update User: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data.username).toBe("adipati");
+		expect(response.body.data.name).toBe("Adipati Suryanegara Updated");
+
+		// check if password is updated
+		const user = await getTestUser();
+		expect(await bcrypt.compare("newpassword", user.password)).toBe(true);
+	});
+
+	it ("should reject if token is invalid", async () => {
+		const response = await supertes(web)
+			.patch("/api/users/current")
+			.set("Authorization", "invalidtoken")
+			.send({
+				name: "Adipati Suryanegara Updated",
+				password: "newpassword",
+			});
+
+		logger.info("Response Update User: ", response.body);
+		// console.log("Response Update User: ", response.body);
+
+		expect(response.status).toBe(401);
+		expect(response.body.errors).toBeDefined();
+	});
+
+	it ("should update name only if password is not provided", async () => {
+		const response = await supertes(web)
+			.patch("/api/users/current")
+			.set("Authorization", "testtoken")
+			.send({
+				name: "Adipati Suryanegara Updated Again",
+			});
+
+		logger.info("Response Update User: ", response.body);
+		// console.log("Response Update User: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data.username).toBe("adipati");
+		expect(response.body.data.name).toBe("Adipati Suryanegara Updated Again");
+
+		// check if password is not updated
+		const user = await getTestUser();
+		expect(await bcrypt.compare("testpassword", user.password)).toBe(true);
+	});
+	
 });
