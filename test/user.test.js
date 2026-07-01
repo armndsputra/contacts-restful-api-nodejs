@@ -238,3 +238,43 @@ describe("PATCH /api/users/current", () => {
 	});
 	
 });
+
+// logout current user with token
+describe("DELETE /api/users/logout", () => {
+	beforeEach(async () => {
+		await createTestUser();
+	});
+
+	afterEach(async () => {
+		// Clean up the test user after each test
+		await removeTest();
+		// console.log("Test user removed");
+	});
+
+	it("should logout the current user", async () => {
+		const response = await supertes(web)
+			.delete("/api/users/logout")
+			.set("Authorization", "testtoken");
+
+		logger.info("Response Logout User: ", response.body);
+		// console.log("Response Logout User: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBe("OK");
+
+		const user = await getTestUser();
+		expect(user.token).toBeNull();
+	});
+
+	it ("should reject if token is invalid", async () => {
+		const response = await supertes(web)
+			.delete("/api/users/logout")
+			.set("Authorization", "invalidtoken");
+
+		logger.info("Response Logout User: ", response.body);
+		// console.log("Response Logout User: ", response.body);
+
+		expect(response.status).toBe(401);
+		expect(response.body.errors).toBeDefined();
+	});
+});

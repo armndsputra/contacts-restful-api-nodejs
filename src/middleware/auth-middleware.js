@@ -15,6 +15,7 @@ export const authMiddleware = async (req, res, next) => {
 		if (!user) {
 			return res.status(401).json({ errors: "Unauthorized" }).end();
 		} else {
+			// send username to req.user
 			req.user = user;
 			next();
 		}
