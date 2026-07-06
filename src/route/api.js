@@ -18,5 +18,6 @@ userRouter.delete("/api/users/logout", logoutController); // Import from control
 
 // Contact API routes
 userRouter.post("/api/contacts", contactController.create); // Import from controller folder
+userRouter.get("/api/contacts/:id", contactController.get); // Import from controller folder	
 
 export { userRouter };

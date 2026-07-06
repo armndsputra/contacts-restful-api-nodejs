@@ -16,4 +16,18 @@ const create = async (req, res, next) => {
 
 }
 
-export default { create };
+const get = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const contactId = req.params.id;
+
+        const contact = await contactService.get(user, contactId);
+        res.status(200).json({
+            data: contact,
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export default { create, get };
