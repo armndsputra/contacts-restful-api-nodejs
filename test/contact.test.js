@@ -88,4 +88,55 @@ describe("Get Contact API", () => {
 		
 	});
 
+	it ("should return 404 for non-existing contact", async () => {
+		const response = await supertes(web)
+			.get(`/api/contacts/9999`)
+			.set("Authorization", `testtoken`);
+		
+		logger.info("Response Get Non-existing Contact: ", response.body);
+
+		expect(response.status).toBe(404);
+		expect(response.body.errors).toBeDefined();
+		
+	});
+
 })
+
+describe("Update Contact API", () => {
+
+	beforeAll(async () => {
+		await createTestUser();
+		await createTestContact();
+	});
+
+	afterAll(async () => {
+		await removeTestContact();
+		await removeTest();
+	});
+
+	it ("should update a contact by ID", async () => {
+
+		const contact = await getTestContact();
+
+		const response = await supertes(web)
+			.patch(`/api/contacts/${contact.id}`)
+			.set("Authorization", `testtoken`)
+			.send({
+				first_name: "Updated Name",
+				last_name: "Updated Last Name",
+				email: "updated.email@example.com",
+				phone: "0987654321",
+			});
+
+		logger.info("Response Update Contact: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data).toHaveProperty("id");
+		expect(response.body.data.first_name).toBe("Updated Name");
+		expect(response.body.data.last_name).toBe("Updated Last Name");
+		expect(response.body.data.email).toBe("updated.email@example.com");
+		expect(response.body.data.phone).toBe("0987654321");
+
+	});
+
+});	
