@@ -139,4 +139,82 @@ describe("Update Contact API", () => {
 
 	});
 
+	it ("should return 404 for non-existing contact update", async () => {
+		const response = await supertes(web)
+			.patch(`/api/contacts/9999`)
+			.set("Authorization", `testtoken`)
+			.send({
+				first_name: "Updated Name",
+				last_name: "Updated Last Name",
+				email: "updated.email@example.com",
+				phone: "0987654321",
+			});
+
+		logger.info("Response Update Non-existing Contact: ", response.body);
+
+		expect(response.status).toBe(404);
+		expect(response.body.errors).toBeDefined();
+
+	});
+
+	it ("should return 400 for invalid contact update data", async () => {
+		const contact = await getTestContact();
+
+		const response = await supertes(web)
+			.patch(`/api/contacts/${contact.id}`)
+			.set("Authorization", `testtoken`)
+			.send({
+				first_name: "",
+				last_name: "Updated Last Name",
+				email: "invalid-email",
+				phone: "0987654321",
+			});
+
+		logger.info("Response Update Invalid Contact: ", response.body);
+
+		expect(response.status).toBe(400);
+		expect(response.body.errors).toBeDefined();
+
+	});
+
 });	
+
+describe("Delete Contact API", () => {
+
+	beforeAll(async () => {
+		await createTestUser();
+		await createTestContact();
+	});
+
+	afterAll(async () => {
+		await removeTestContact();
+		await removeTest();
+	});
+
+	it ("should delete a contact by ID", async () => {
+
+		const contact = await getTestContact();
+
+		const response = await supertes(web)
+			.delete(`/api/contacts/${contact.id}`)
+			.set("Authorization", `testtoken`);
+
+		logger.info("Response Delete Contact: ", response.body);
+
+		expect(response.status).toBe(204);
+		
+	});
+
+	it ("should return 404 for non-existing contact delete", async () => {
+		const response = await supertes(web)
+			.delete(`/api/contacts/9999`)
+			.set("Authorization", `testtoken`);
+
+		logger.info("Response Delete Non-existing Contact: ", response.body);
+
+		expect(response.status).toBe(404);
+		expect(response.body.errors).toBeDefined();
+
+	});
+
+});
