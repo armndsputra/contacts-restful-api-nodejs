@@ -21,5 +21,6 @@ userRouter.post("/api/contacts", contactController.create); // Import from contr
 userRouter.get("/api/contacts/:id", contactController.get); // Import from controller folder	
 userRouter.patch("/api/contacts/:id", contactController.update); // Import from controller folder
 userRouter.delete("/api/contacts/:id", contactController.remove); // Import from controller folder
+userRouter.get("/api/contacts/", contactController.search); // Import from controller folder
 
 export { userRouter };

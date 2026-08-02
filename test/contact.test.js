@@ -1,4 +1,4 @@
-import { createTestUser, removeTest, removeTestContact, createTestContact, getTestContact } from "./test-util.js";
+import { createTestUser, removeTest, removeTestContact, createTestContact, getTestContact, createManyTestContact } from "./test-util.js";
 import supertes from "supertest";
 import { web } from "../src/app/web.js";
 import { logger } from "../src/app/logging.js";
@@ -218,3 +218,33 @@ describe("Delete Contact API", () => {
 	});
 
 });
+
+// search Contact API Test
+describe("Search Contact API", () => {
+
+	beforeAll(async () => {
+		await createTestUser();
+		await createManyTestContact();
+	});
+
+	afterAll(async () => {
+		await removeTestContact();
+		await removeTest();
+	}); 
+
+	it ("should search contacts by query", async () => {
+		const response = await supertes(web)
+			.get(`/api/contacts/`)
+			.set("Authorization", `testtoken`);
+
+		logger.info("Response Search Contact: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBeDefined();
+		expect(response.body.data.length).toBe(5);
+		expect(response.body.paging.total_page).toBe(2);
+		expect(response.body.paging.total_items).toBe(10);
+		
+	})
+
+})
