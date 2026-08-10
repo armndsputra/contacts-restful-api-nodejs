@@ -108,6 +108,7 @@ const remove = async (user, contactId) => {
 const search = async (user, request) => {
 	request = validate(searchContactValidation, request);
 
+	// console.log(request.size)
 	const skip = (request.page - 1) * request.size;
 
 	const filters = [];

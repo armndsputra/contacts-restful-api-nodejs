@@ -242,9 +242,28 @@ describe("Search Contact API", () => {
 		expect(response.status).toBe(200);
 		expect(response.body.data).toBeDefined();
 		expect(response.body.data.length).toBe(5);
-		expect(response.body.paging.total_page).toBe(2);
-		expect(response.body.paging.total_items).toBe(10);
+		expect(response.body.paging.total_page).toBe(4);
+		expect(response.body.paging.total_items).toBe(20);
 		
 	})
+
+	it ("search 2 page", async () => {
+		const response = await supertes(web)
+			.get(`/api/contacts/`)
+			.query({
+				page : 4,
+				size: 2
+			})
+			.set("Authorization", `testtoken`);
+
+		logger.info("---------------")
+		logger.info("Response Search 2 page: ", response.body);
+
+		
+		
+	})
+
+
+
 
 })
