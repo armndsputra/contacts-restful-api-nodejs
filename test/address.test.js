@@ -23,6 +23,7 @@ describe("Address Service", () => {
 	// 	await removeTestContact();
 	// });
 
+    // User masih direferensikan oleh Contact jadi harus dihapus dulu Contactnya baru Usernya, begitu juga dengan Address yang direferensikan oleh Contact, jadi harus dihapus dulu Addressnya baru Contactnya, baru Usernya.
 	afterAll(async () => {
 		await removeAllTestAddress();
 		await removeTestContact();
