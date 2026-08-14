@@ -1,10 +1,16 @@
-import { createTestUser, removeTest, removeTestContact, createTestContact, getTestContact, createManyTestContact } from "./test-util.js";
+import {
+	createTestUser,
+	removeTest,
+	removeTestContact,
+	createTestContact,
+	getTestContact,
+	createManyTestContact,
+} from "./test-util.js";
 import supertes from "supertest";
 import { web } from "../src/app/web.js";
 import { logger } from "../src/app/logging.js";
 
 describe("Contact API", () => {
-
 	beforeAll(async () => {
 		await createTestUser();
 	});
@@ -51,13 +57,10 @@ describe("Contact API", () => {
 		expect(response.status).toBe(400);
 		expect(response.body.errors).toBeDefined();
 	});
-
-	
 });
 
 // Get Contact API Test
 describe("Get Contact API", () => {
-
 	beforeAll(async () => {
 		await createTestUser();
 		await createTestContact();
@@ -68,14 +71,12 @@ describe("Get Contact API", () => {
 		await removeTest();
 	});
 
-	it ("should get a contact by ID", async () => {
-
+	it("should get a contact by ID", async () => {
 		const contact = await getTestContact();
 
 		const response = await supertes(web)
 			.get(`/api/contacts/${contact.id}`)
 			.set("Authorization", `testtoken`);
-		
 
 		logger.info("Response Get Contact: ", response.body);
 
@@ -85,25 +86,21 @@ describe("Get Contact API", () => {
 		expect(response.body.data.last_name).toBe(contact.last_name);
 		expect(response.body.data.email).toBe(contact.email);
 		expect(response.body.data.phone).toBe(contact.phone);
-		
 	});
 
-	it ("should return 404 for non-existing contact", async () => {
+	it("should return 404 for non-existing contact", async () => {
 		const response = await supertes(web)
 			.get(`/api/contacts/9999`)
 			.set("Authorization", `testtoken`);
-		
+
 		logger.info("Response Get Non-existing Contact: ", response.body);
 
 		expect(response.status).toBe(404);
 		expect(response.body.errors).toBeDefined();
-		
 	});
-
-})
+});
 
 describe("Update Contact API", () => {
-
 	beforeAll(async () => {
 		await createTestUser();
 		await createTestContact();
@@ -114,8 +111,7 @@ describe("Update Contact API", () => {
 		await removeTest();
 	});
 
-	it ("should update a contact by ID", async () => {
-
+	it("should update a contact by ID", async () => {
 		const contact = await getTestContact();
 
 		const response = await supertes(web)
@@ -136,10 +132,9 @@ describe("Update Contact API", () => {
 		expect(response.body.data.last_name).toBe("Updated Last Name");
 		expect(response.body.data.email).toBe("updated.email@example.com");
 		expect(response.body.data.phone).toBe("0987654321");
-
 	});
 
-	it ("should return 404 for non-existing contact update", async () => {
+	it("should return 404 for non-existing contact update", async () => {
 		const response = await supertes(web)
 			.patch(`/api/contacts/9999`)
 			.set("Authorization", `testtoken`)
@@ -154,10 +149,9 @@ describe("Update Contact API", () => {
 
 		expect(response.status).toBe(404);
 		expect(response.body.errors).toBeDefined();
-
 	});
 
-	it ("should return 400 for invalid contact update data", async () => {
+	it("should return 400 for invalid contact update data", async () => {
 		const contact = await getTestContact();
 
 		const response = await supertes(web)
@@ -174,13 +168,10 @@ describe("Update Contact API", () => {
 
 		expect(response.status).toBe(400);
 		expect(response.body.errors).toBeDefined();
-
 	});
-
-});	
+});
 
 describe("Delete Contact API", () => {
-
 	beforeAll(async () => {
 		await createTestUser();
 		await createTestContact();
@@ -191,8 +182,7 @@ describe("Delete Contact API", () => {
 		await removeTest();
 	});
 
-	it ("should delete a contact by ID", async () => {
-
+	it("should delete a contact by ID", async () => {
 		const contact = await getTestContact();
 
 		const response = await supertes(web)
@@ -202,10 +192,9 @@ describe("Delete Contact API", () => {
 		logger.info("Response Delete Contact: ", response.body);
 
 		expect(response.status).toBe(204);
-		
 	});
 
-	it ("should return 404 for non-existing contact delete", async () => {
+	it("should return 404 for non-existing contact delete", async () => {
 		const response = await supertes(web)
 			.delete(`/api/contacts/9999`)
 			.set("Authorization", `testtoken`);
@@ -214,14 +203,11 @@ describe("Delete Contact API", () => {
 
 		expect(response.status).toBe(404);
 		expect(response.body.errors).toBeDefined();
-
 	});
-
 });
 
 // search Contact API Test
 describe("Search Contact API", () => {
-
 	beforeAll(async () => {
 		await createTestUser();
 		await createManyTestContact();
@@ -230,9 +216,9 @@ describe("Search Contact API", () => {
 	afterAll(async () => {
 		await removeTestContact();
 		await removeTest();
-	}); 
+	});
 
-	it ("should search contacts by query", async () => {
+	it("should search contacts by query", async () => {
 		const response = await supertes(web)
 			.get(`/api/contacts/`)
 			.set("Authorization", `testtoken`);
@@ -244,26 +230,68 @@ describe("Search Contact API", () => {
 		expect(response.body.data.length).toBe(5);
 		expect(response.body.paging.total_page).toBe(4);
 		expect(response.body.paging.total_items).toBe(20);
-		
-	})
+	});
 
-	it ("search 2 page", async () => {
+	it("search 2 page", async () => {
 		const response = await supertes(web)
 			.get(`/api/contacts/`)
 			.query({
-				page : 4,
-				size: 2
+				page: 4,
+				size: 2,
 			})
 			.set("Authorization", `testtoken`);
 
-		logger.info("---------------")
+		// logger.info("---------------");
 		logger.info("Response Search 2 page: ", response.body);
+	});
 
-		
-		
-	})
+	it("should search contacts by name", async () => {
+		const response = await supertes(web)
+			.get(`/api/contacts/`)
+			.query({
+				name: "John Doe 1",
+			})
+			.set("Authorization", `testtoken`);
 
+		logger.info("Response Search Contact by Name: ", response.body);
 
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBeDefined();
+		expect(response.body.data.length).toBe(5);
+		expect(response.body.paging.total_page).toBe(3);
+		expect(response.body.paging.total_items).toBe(11);
+	});
 
+	it("should search contacts by email", async () => {
+		const response = await supertes(web)
+			.get(`/api/contacts/`)
+			.query({
+				email: "John.Doe1@example.com",
+			})
+			.set("Authorization", `testtoken`);
 
-})
+		logger.info("Response Search Contact by Email: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBeDefined();
+		expect(response.body.paging.total_page).toBe(1);
+		expect(response.body.paging.total_items).toBe(1);
+	});
+
+	it("should search contacts by size", async () => {
+		const response = await supertes(web)
+			.get(`/api/contacts/`)
+			.query({
+				size: 10,
+			})
+			.set("Authorization", `testtoken`);
+
+		logger.info("Response Search Contact by Phone: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBeDefined();
+		expect(response.body.data.length).toBe(10);
+		expect(response.body.paging.total_page).toBe(2);
+		expect(response.body.paging.total_items).toBe(20);
+	});
+});

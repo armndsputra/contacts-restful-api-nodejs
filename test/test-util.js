@@ -70,3 +70,13 @@ export const getTestContact = async () => {
 		},
 	});
 };
+
+export const removeAllTestAddress = async () => {
+	await prismaClient.addresess.deleteMany({
+		where: {
+			contact: {
+				username: "adipati",
+			},
+		},
+	});
+}

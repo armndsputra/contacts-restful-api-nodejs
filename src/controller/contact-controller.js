@@ -3,6 +3,7 @@ import contactService from "../service/contact-service.js";
 const create = async (req, res, next) => {
 	try {
 		const user = req.user;
+		// console.log(" this is user :",user)
 		const request = req.body;
 
 		const contact = await contactService.create(user, request);
@@ -69,7 +70,7 @@ export const search = async (req, res, next) => {
 			size: req.query.size,
 		};
 
-		console.log(request)
+		// console.log(request)
 
 		const result = await contactService.search(user, request);
 		res.status(200).json({
