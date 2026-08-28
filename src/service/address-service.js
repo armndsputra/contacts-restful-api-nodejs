@@ -34,6 +34,7 @@ const create = async (user, contactId, request) => {
 			provence: true,
 			postal_code: true,
 			country: true,
+			contact_id: true,
 		},
 	});	
 };
