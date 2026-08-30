@@ -39,6 +39,13 @@ const create = async (user, contactId, request) => {
 	});	
 };
 
+const get = async () => {
+	
+	
+	
+}
+
+
 export default {
-	create,
+	create, 
 };

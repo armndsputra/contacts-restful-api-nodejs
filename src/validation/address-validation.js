@@ -8,4 +8,6 @@ const createAddressValidation = Joi.object({
   country: Joi.string().max(100).required(),
 });
 
-export { createAddressValidation };
+const getAddressValidation = Joi.number().min(1).positive().required();
+
+export { createAddressValidation, getAddressValidation };
