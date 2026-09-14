@@ -20,6 +20,26 @@ const create = async (req, res, next) => {
 
  }
 
+ const get = async (req, res, next) => {
+
+    try {
+
+        const user = req.user;
+        const contactId = req.params.contactId;
+        const addressId = req.params.addressId;
+        // console.log("Contact ID: ", contactId);
+        const address = await addressService.get(user, contactId, addressId);
+        
+        res.status(200).json({
+            data: address,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+
+ }
+
  export default {
- 	create,
+ 	create, get
  };

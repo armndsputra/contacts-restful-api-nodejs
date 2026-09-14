@@ -6,6 +6,8 @@ import {
 	getTestContact,
 	createManyTestContact,
 	removeAllTestAddress,
+	createTestAddress,
+	getTestAddress,
 } from "./test-util.js";
 import supertes from "supertest";
 import { web } from "../src/app/web.js";
@@ -97,4 +99,39 @@ describe("Address Service", () => {
 		expect(response.body.errors).toBeDefined();
 		expect(response.body.errors.length).toBeGreaterThan(0);
 	});
+});
+
+
+
+
+describe("Address Service - Get Addresses", () => {
+	beforeAll(async () => {
+		await createTestUser();
+		await createTestContact();
+		await createTestAddress();
+	});
+
+	afterAll(async () => {
+		await removeAllTestAddress();
+		await removeTestContact();
+		await removeTest();
+	});
+
+	it("should get all addresses for a contact", async () => {
+		const contact = await getTestContact();
+		const address = await getTestAddress();
+		const response = await supertes(web)
+			.get(`/api/contacts/${contact.id}/addresses/${address.id}`)
+			.set("Authorization", "testtoken");
+
+		logger.info("Response Get all addresses for a contact: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data.contact_id).toBe(contact.id);
+		expect(response.body.data.street).toBe("123 Main St");
+		expect(response.body.data.city).toBe("Anytown");
+		expect(response.body.data.provence).toBe("CA");
+		expect(response.body.data.postal_code).toBe("12345");
+		expect(response.body.data.country).toBe("USA");	
+	})
 });

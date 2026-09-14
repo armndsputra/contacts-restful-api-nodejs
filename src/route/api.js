@@ -26,5 +26,6 @@ userRouter.get("/api/contacts/", contactController.search); // Import from contr
 
 // Address API routes
 userRouter.post("/api/contacts/:contactId/addresses", addressController.create); // Import from controller folder
+userRouter.get("/api/contacts/:contactId/addresses/:addressId", addressController.get); // Import from controller folder	
 
 export { userRouter };
