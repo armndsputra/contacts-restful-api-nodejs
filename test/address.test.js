@@ -134,4 +134,18 @@ describe("Address Service - Get Addresses", () => {
 		expect(response.body.data.postal_code).toBe("12345");
 		expect(response.body.data.country).toBe("USA");	
 	})
+
+	it("rejects getting addresses for a non-existent contact", async () => {
+		const response = await supertes(web)
+			.get(`/api/contacts/9999/addresses`)
+			.set("Authorization", "testtoken");
+
+		logger.info(
+			"Response Get addresses for non-existent contact: ",
+			response.body,
+		);
+
+		expect(response.status).toBe(404);
+	});
+
 });
