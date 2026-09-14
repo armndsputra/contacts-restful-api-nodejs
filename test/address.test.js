@@ -132,7 +132,7 @@ describe("Address Service - Get Addresses", () => {
 		expect(response.body.data.city).toBe("Anytown");
 		expect(response.body.data.provence).toBe("CA");
 		expect(response.body.data.postal_code).toBe("12345");
-		expect(response.body.data.country).toBe("USA");	
+		expect(response.body.data.country).toBe("USA");
 	})
 
 	it("rejects getting addresses for a non-existent contact", async () => {
@@ -149,3 +149,44 @@ describe("Address Service - Get Addresses", () => {
 	});
 
 });
+
+describe("Address Service - Update Addresses", () => {
+	beforeAll(async () => {
+		await createTestUser();
+		await createTestContact();
+		await createTestAddress();
+	});
+
+	afterAll(async () => {
+		await removeAllTestAddress();
+		await removeTestContact();
+		await removeTest();
+	});
+
+	it("should update an address for a contact", async () => {
+		const contact = await getTestContact();
+		const address = await getTestAddress();
+		const response = await supertes(web)
+			.patch(`/api/contacts/${contact.id}/addresses/${address.id}`)
+			.set("Authorization", "testtoken")
+			.send({
+				street: "456 Elm St",
+				city: "Othertown",
+				provence: "Otherstate",
+				postal_code: "67890",
+				country: "Canada",
+			});
+
+		logger.info("Response Before Update an address for a contact: ", address);
+		logger.info("Response Update an address for a contact: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data.contact_id).toBe(contact.id);
+		expect(response.body.data.street).toBe("456 Elm St");
+		expect(response.body.data.city).toBe("Othertown");
+		expect(response.body.data.provence).toBe("Otherstate");
+		expect(response.body.data.postal_code).toBe("67890");
+		expect(response.body.data.country).toBe("Canada");
+	});
+
+})
