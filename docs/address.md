@@ -15,7 +15,7 @@ Request Body :
 	"street": "JL mawar no 45",
 	"city": "Sleman",
 	"province": "Yogyakarta",
-    "country" : "indonesia"
+	"country" : "indonesia"
 	"postal_code": "5567"
 }
 ```
@@ -154,7 +154,7 @@ Response Body Error :
 
 ```json
 {
-    "errors" : "contact is not found"
+	"errors": "contact is not found"
 }
 ```
 
@@ -166,13 +166,11 @@ Headers :
 
 - Authorezation : token
 
-
-
 Response Body Success :
 
 ```json
 {
-    "data" : "OK"
+	"data": "OK"
 }
 ```
 
@@ -180,6 +178,6 @@ Response Body Error :
 
 ```json
 {
-    "errors" : "contact is not found"
+	"errors": "contact is not found"
 }
 ```
