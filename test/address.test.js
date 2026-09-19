@@ -190,3 +190,96 @@ describe("Address Service - Update Addresses", () => {
 	});
 
 })
+
+describe("Address Service - Remove Addresses", () => {
+	beforeAll(async () => {
+		await createTestUser();
+		await createTestContact();
+		await createTestAddress();
+	});
+
+	afterAll(async () => {
+		await removeAllTestAddress();
+		await removeTestContact();
+		await removeTest();
+	});
+
+	it("should remove an address for a contact", async () => {
+		const contact = await getTestContact();
+		const address = await getTestAddress();
+		// console.log("Contact ID: ", contact.id);
+		// console.log("Address ID: ", address.id);
+		
+		const response = await supertes(web)
+			.delete(`/api/contacts/${contact.id}/addresses/${address.id}`)
+			.set("Authorization", "testtoken");
+		// console.log("Response Status: ", response);
+		logger.info("Response Remove an address for a contact: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBe("OK");
+		
+	});
+
+	it("rejects removing an address for a non-existent contact", async () => {
+		const response = await supertes(web)
+			.delete(`/api/contacts/9999/addresses/1`)
+			.set("Authorization", "testtoken");
+
+		logger.info(
+			"Response Remove an address for non-existent contact: ",
+			response.body,
+		);
+
+		expect(response.status).toBe(404);
+	});
+
+	it("rejects removing a non-existent address for a contact", async () => {
+		const contact = await getTestContact();
+		const response = await supertes(web)
+			.delete(`/api/contacts/${contact.id}/addresses/9999`)
+			.set("Authorization", "testtoken");
+
+		logger.info(
+			"Response Remove a non-existent address for a contact: ",
+			response.body,
+		);
+
+		expect(response.status).toBe(404);
+	});
+});
+
+describe("Address Service - List Addresses", () => {
+	beforeAll(async () => {
+		await createTestUser();
+		await createTestContact();
+		await createManyTestContact(5);
+		await createTestAddress();
+	});
+
+	afterAll(async () => {
+		await removeAllTestAddress();
+		await removeTestContact();
+		await removeTest();
+	});
+
+	it("should list all addresses for a contact", async () => {
+		const contact = await getTestContact();
+		const response = await supertes(web)
+			.get(`/api/contacts/${contact.id}/addresses`)
+			.set("Authorization", "testtoken");
+
+		logger.info("Response List all addresses for a contact: ", response.body);
+
+		expect(response.status).toBe(200);
+		expect(Array.isArray(response.body.data)).toBe(true);
+		expect(response.body.data.length).toBeGreaterThan(0);
+		expect(response.body.data[0].contact_id).toBe(contact.id);
+		expect(response.body.data[0].street).toBe("123 Main St");
+		expect(response.body.data[0].city).toBe("Anytown");
+		expect(response.body.data[0].provence).toBe("CA");
+		expect(response.body.data[0].postal_code).toBe("12345");
+		expect(response.body.data[0].country).toBe("USA");
+		
+	});
+});

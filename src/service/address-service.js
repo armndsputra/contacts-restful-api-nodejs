@@ -111,7 +111,62 @@ const update = async (user, contactId, request) => {
 	});
 }
 
+const remove = async (user, contactId, addressId) => {
+	contactId = await checkContactExists(user, contactId);
+	addressId = await validate(getAddressValidation, addressId);
+
+	const totalAddressDatabase = await prismaClient.addresess.count({
+		where: {
+			id: addressId,
+			contact_id: contactId,
+		},
+	});
+
+	// console.log("Total Address Database: ", totalAddressDatabase);
+
+	if (totalAddressDatabase !== 1) {
+		throw new ResponseError(404, "Address not found");
+	}
+
+	return prismaClient.addresess.delete({
+		where: {
+			id: addressId,
+		}
+		,select: {
+			id: true,
+			street: true,
+			city: true,
+			provence: true,
+			postal_code: true,
+			country: true,
+			contact_id: true,
+		}
+	});
+}
+
+const list = async (user, contactId) => {
+	contactId = await checkContactExists(user, contactId);
+	// console.log("Contact ID: ", contactId);
+	const addresses = await prismaClient.addresess.findMany({
+		where: {
+			contact_id: contactId,
+		},
+		select: {
+			id: true,
+			street: true,
+			city: true,
+			provence: true,
+			postal_code: true,
+			country: true,
+			contact_id: true,
+		},
+	});
+
+	// console.log("Addresses: ", addresses);
+	return addresses;
+}
+
 
 export default {
-	create, get, update
+	create, get, update, remove, list
 };
