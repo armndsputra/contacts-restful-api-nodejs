@@ -7,12 +7,14 @@
   "type": "module",
   "main": "src/main.js",
   "scripts": {
-    "test": "NODE_OPTIONS='--experimental-vm-modules' jest -i",
+    "test": " jest -i",
     "dev": "nodemon src/main.js",
     "start": "node src/main.js"
   },
   "jest": {
-    "transform": {}
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -25,11 +27,14 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.6",
+    "@babel/preset-env": "^8.0.6",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/supertest": "^7.2.0",
     "@types/uuid": "^10.0.0",
+    "babel-jest": "^30.5.2",
     "jest": "^30.4.2",
     "nodemon": "^3.0.1",
     "prisma": "^6.19.3",

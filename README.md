@@ -5,3 +5,5 @@ Route -> Controller -> Service
 Erros : Service ( ResponseError -> Middleware (Error-Middleware))
 
 testing -> remember the order of utils funtion
+
+npx prisma migrate dev
