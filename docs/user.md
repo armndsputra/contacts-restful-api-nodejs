@@ -2,15 +2,15 @@
 
 ## Register User API
 
-Endpoint : POST /api/users
+- **Endpoint** : `POST /api/register`
 
-Request Body :
+##### Request Body :
 
 ```json
 {
-	"username": "aprilmop",
-	"password": "rahasia",
-	"name": "april de jong"
+ "name": "adipati suryanegara", // required
+ "username": "adipati", // required
+ "password": "rahasia",
 }
 ```
 
@@ -18,10 +18,10 @@ Response Body Success :
 
 ```json
 {
-	"data": {
-		"username": "aprilmop",
-		"name": "april de jong"
-	}
+ "data": {
+  "username": "adipati",
+  "name": "adipati suryanagara"
+ }
 }
 ```
 
@@ -29,13 +29,13 @@ Response Body Error :
 
 ```json
 {
-	"errors": "Username alrady registered"
+ "errors": "Username alrady registered"
 }
 ```
 
 ## Login User API
 
-Endpoint : POST /api/users/login
+Endpoint : POST /api/login
 
 Request Body :
 
@@ -102,6 +102,7 @@ Response Body Error :
 
 Endpoint : GET /api/users/current
 Header :
+
 - Authorization : token
 
 Response Body Success :
@@ -134,13 +135,14 @@ Response Body Success :
 
 ```json
 {
-    "data" : "OK"
+	"data": "OK"
 }
 ```
 
-Response Body Error : 
+Response Body Error :
+
 ```json
 {
-    "errors" : "Unauthorized"
+	"errors": "Unauthorized"
 }
 ```

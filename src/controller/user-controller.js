@@ -70,5 +70,3 @@ export const logoutController = async (req, res, next) => {
 		return next(error);
 	}
 };
-
-

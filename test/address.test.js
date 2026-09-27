@@ -101,9 +101,6 @@ describe("Address Service", () => {
 	});
 });
 
-
-
-
 describe("Address Service - Get Addresses", () => {
 	beforeAll(async () => {
 		await createTestUser();
@@ -124,7 +121,10 @@ describe("Address Service - Get Addresses", () => {
 			.get(`/api/contacts/${contact.id}/addresses/${address.id}`)
 			.set("Authorization", "testtoken");
 
-		logger.info("Response Get all addresses for a contact: ", response.body);
+		logger.info(
+			"Response Get all addresses for a contact: ",
+			response.body,
+		);
 
 		expect(response.status).toBe(200);
 		expect(response.body.data.contact_id).toBe(contact.id);
@@ -133,7 +133,7 @@ describe("Address Service - Get Addresses", () => {
 		expect(response.body.data.provence).toBe("CA");
 		expect(response.body.data.postal_code).toBe("12345");
 		expect(response.body.data.country).toBe("USA");
-	})
+	});
 
 	it("rejects getting addresses for a non-existent contact", async () => {
 		const response = await supertes(web)
@@ -147,7 +147,6 @@ describe("Address Service - Get Addresses", () => {
 
 		expect(response.status).toBe(404);
 	});
-
 });
 
 describe("Address Service - Update Addresses", () => {
@@ -177,8 +176,14 @@ describe("Address Service - Update Addresses", () => {
 				country: "Canada",
 			});
 
-		logger.info("Response Before Update an address for a contact: ", address);
-		logger.info("Response Update an address for a contact: ", response.body);
+		logger.info(
+			"Response Before Update an address for a contact: ",
+			address,
+		);
+		logger.info(
+			"Response Update an address for a contact: ",
+			response.body,
+		);
 
 		expect(response.status).toBe(200);
 		expect(response.body.data.contact_id).toBe(contact.id);
@@ -188,8 +193,7 @@ describe("Address Service - Update Addresses", () => {
 		expect(response.body.data.postal_code).toBe("67890");
 		expect(response.body.data.country).toBe("Canada");
 	});
-
-})
+});
 
 describe("Address Service - Remove Addresses", () => {
 	beforeAll(async () => {
@@ -209,16 +213,18 @@ describe("Address Service - Remove Addresses", () => {
 		const address = await getTestAddress();
 		// console.log("Contact ID: ", contact.id);
 		// console.log("Address ID: ", address.id);
-		
+
 		const response = await supertes(web)
 			.delete(`/api/contacts/${contact.id}/addresses/${address.id}`)
 			.set("Authorization", "testtoken");
 		// console.log("Response Status: ", response);
-		logger.info("Response Remove an address for a contact: ", response.body);
+		logger.info(
+			"Response Remove an address for a contact: ",
+			response.body,
+		);
 
 		expect(response.status).toBe(200);
 		expect(response.body.data).toBe("OK");
-		
 	});
 
 	it("rejects removing an address for a non-existent contact", async () => {
@@ -269,7 +275,10 @@ describe("Address Service - List Addresses", () => {
 			.get(`/api/contacts/${contact.id}/addresses`)
 			.set("Authorization", "testtoken");
 
-		logger.info("Response List all addresses for a contact: ", response.body);
+		logger.info(
+			"Response List all addresses for a contact: ",
+			response.body,
+		);
 
 		expect(response.status).toBe(200);
 		expect(Array.isArray(response.body.data)).toBe(true);
@@ -280,6 +289,5 @@ describe("Address Service - List Addresses", () => {
 		expect(response.body.data[0].provence).toBe("CA");
 		expect(response.body.data[0].postal_code).toBe("12345");
 		expect(response.body.data[0].country).toBe("USA");
-		
 	});
 });

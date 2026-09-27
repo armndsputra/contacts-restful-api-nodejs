@@ -20,4 +20,3 @@ export const updateUserValidation = Joi.object({
 	name: Joi.string().min(6).optional(),
 	password: Joi.string().min(6).optional(),
 });
-

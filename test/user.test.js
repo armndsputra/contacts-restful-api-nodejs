@@ -167,7 +167,6 @@ describe("GET /api/users/current", () => {
 	});
 });
 
-
 // update current user with token
 describe("PATCH /api/users/current", () => {
 	beforeEach(async () => {
@@ -201,7 +200,7 @@ describe("PATCH /api/users/current", () => {
 		expect(await bcrypt.compare("newpassword", user.password)).toBe(true);
 	});
 
-	it ("should reject if token is invalid", async () => {
+	it("should reject if token is invalid", async () => {
 		const response = await supertes(web)
 			.patch("/api/users/current")
 			.set("Authorization", "invalidtoken")
@@ -217,7 +216,7 @@ describe("PATCH /api/users/current", () => {
 		expect(response.body.errors).toBeDefined();
 	});
 
-	it ("should update name only if password is not provided", async () => {
+	it("should update name only if password is not provided", async () => {
 		const response = await supertes(web)
 			.patch("/api/users/current")
 			.set("Authorization", "testtoken")
@@ -230,13 +229,14 @@ describe("PATCH /api/users/current", () => {
 
 		expect(response.status).toBe(200);
 		expect(response.body.data.username).toBe("adipati");
-		expect(response.body.data.name).toBe("Adipati Suryanegara Updated Again");
+		expect(response.body.data.name).toBe(
+			"Adipati Suryanegara Updated Again",
+		);
 
 		// check if password is not updated
 		const user = await getTestUser();
 		expect(await bcrypt.compare("testpassword", user.password)).toBe(true);
 	});
-	
 });
 
 // logout current user with token
@@ -266,7 +266,7 @@ describe("DELETE /api/users/logout", () => {
 		expect(user.token).toBeNull();
 	});
 
-	it ("should reject if token is invalid", async () => {
+	it("should reject if token is invalid", async () => {
 		const response = await supertes(web)
 			.delete("/api/users/logout")
 			.set("Authorization", "invalidtoken");

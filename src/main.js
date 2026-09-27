@@ -1,5 +1,5 @@
 import { logger } from "./app/logging.js";
-import { web } from "./app/web.js"; 
+import { web } from "./app/web.js";
 
 // application first entry point
 web.listen(3000, () => {

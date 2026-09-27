@@ -24,7 +24,7 @@ export const registerService = async (request) => {
 	});
 
 	if (countUser === 1) {
-		throw new ResponseError(400, "username already exists"); // throw to error folder
+		throw new ResponseError(400, "username already registered"); // throw to error folder
 	}
 
 	user.password = await bcrypt.hash(user.password, 10);
@@ -83,9 +83,8 @@ export const loginService = async (request) => {
 };
 
 export const getUserByUsernameService = async (username) => {
-
 	// console.log("username: ", username);
-	const user = validate(getUserValidation, {username}); // kirim object dengan key username agar sesuai dengan skema validasi
+	const user = validate(getUserValidation, { username }); // kirim object dengan key username agar sesuai dengan skema validasi
 
 	const findUser = await prismaClient.user.findUnique({
 		where: {
@@ -119,7 +118,7 @@ export const updateUserService = async (request) => {
 	}
 
 	const updateData = {};
-	
+
 	if (user.name) {
 		updateData.name = user.name;
 	}
@@ -140,7 +139,7 @@ export const updateUserService = async (request) => {
 };
 
 export const logoutService = async (username) => {
-	const user = validate(getUserValidation, {username}); // kirim object dengan key username agar sesuai dengan skema validasi
+	const user = validate(getUserValidation, { username }); // kirim object dengan key username agar sesuai dengan skema validasi
 
 	const findUser = await prismaClient.user.findUnique({
 		where: {
@@ -160,7 +159,7 @@ export const logoutService = async (username) => {
 			token: null,
 		},
 		select: {
-			username: true
+			username: true,
 		},
 	});
 };

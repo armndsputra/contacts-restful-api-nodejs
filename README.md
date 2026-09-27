@@ -1,9 +1,3 @@
-DATABASE_URL="mysql://root:root@localhost:3306/db_phonebook"
+CONTACTS RESTFUL API
 
-Route -> Controller -> Service
-
-Erros : Service ( ResponseError -> Middleware (Error-Middleware))
-
-testing -> remember the order of utils funtion
-
-npx prisma migrate dev
+Link :  [GO](docs/user.md#fetch-all-content-by-user-id) 

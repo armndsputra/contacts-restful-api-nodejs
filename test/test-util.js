@@ -29,7 +29,6 @@ export const getTestUser = async () => {
 	});
 };
 
-
 // contact
 export const removeTestContact = async () => {
 	await prismaClient.contact.deleteMany({
@@ -73,11 +72,6 @@ export const getTestContact = async () => {
 	});
 };
 
-
-
-
-
-
 // address
 export const removeAllTestAddress = async () => {
 	await prismaClient.addresess.deleteMany({
@@ -87,8 +81,7 @@ export const removeAllTestAddress = async () => {
 			},
 		},
 	});
-}
-
+};
 
 export const createTestAddress = async () => {
 	const contact = await getTestContact();

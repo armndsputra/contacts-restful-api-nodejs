@@ -1,5 +1,9 @@
 import { validate } from "../validation/validation.js";
-import { createAddressValidation, getAddressValidation, updateAddressValidation } from "../validation/address-validation.js";
+import {
+	createAddressValidation,
+	getAddressValidation,
+	updateAddressValidation,
+} from "../validation/address-validation.js";
 
 import { getContactValidation } from "../validation/contact-validation.js";
 
@@ -40,14 +44,14 @@ const create = async (user, contactId, request) => {
 			country: true,
 			contact_id: true,
 		},
-	});	
+	});
 };
 
 const get = async (user, contactId, addressId) => {
 	contactId = await checkContactExists(user, contactId);
 
 	addressId = await validate(getAddressValidation, addressId);
-	
+
 	const address = await prismaClient.addresess.findUnique({
 		where: {
 			id: addressId,
@@ -69,11 +73,10 @@ const get = async (user, contactId, addressId) => {
 	}
 
 	return address;
-}
+};
 
 // update address for a contact, if contact or address not found throw error
 const update = async (user, contactId, request) => {
-
 	contactId = await checkContactExists(user, contactId);
 	const address = await validate(updateAddressValidation, request);
 
@@ -109,7 +112,7 @@ const update = async (user, contactId, request) => {
 			contact_id: true,
 		},
 	});
-}
+};
 
 const remove = async (user, contactId, addressId) => {
 	contactId = await checkContactExists(user, contactId);
@@ -131,8 +134,8 @@ const remove = async (user, contactId, addressId) => {
 	return prismaClient.addresess.delete({
 		where: {
 			id: addressId,
-		}
-		,select: {
+		},
+		select: {
 			id: true,
 			street: true,
 			city: true,
@@ -140,9 +143,9 @@ const remove = async (user, contactId, addressId) => {
 			postal_code: true,
 			country: true,
 			contact_id: true,
-		}
+		},
 	});
-}
+};
 
 const list = async (user, contactId) => {
 	contactId = await checkContactExists(user, contactId);
@@ -164,9 +167,12 @@ const list = async (user, contactId) => {
 
 	// console.log("Addresses: ", addresses);
 	return addresses;
-}
-
+};
 
 export default {
-	create, get, update, remove, list
+	create,
+	get,
+	update,
+	remove,
+	list,
 };

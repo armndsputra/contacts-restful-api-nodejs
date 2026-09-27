@@ -1,33 +1,33 @@
 import Joi from "joi";
 
 const createContactValidation = Joi.object({
-    first_name: Joi.string().max(50).required(),
-    last_name: Joi.string().max(50).optional(),
-    email: Joi.string().email().optional(),
-    phone: Joi.string().max(30).required(),
+	first_name: Joi.string().max(50).required(),
+	last_name: Joi.string().max(50).optional(),
+	email: Joi.string().email().optional(),
+	phone: Joi.string().max(30).required(),
 });
 
 const getContactValidation = Joi.number().positive().required();
 
 const updateContactValidation = Joi.object({
-    id: Joi.number().positive().required(),
-    first_name: Joi.string().max(50).optional(),
-    last_name: Joi.string().max(50).optional(),
-    email: Joi.string().email().optional(),
-    phone: Joi.string().max(30).optional(),
+	id: Joi.number().positive().required(),
+	first_name: Joi.string().max(50).optional(),
+	last_name: Joi.string().max(50).optional(),
+	email: Joi.string().email().optional(),
+	phone: Joi.string().max(30).optional(),
 });
 
 const searchContactValidation = Joi.object({
-    page : Joi.number().min(1).positive().default(1),
-    size : Joi.number().min(1).positive().max(100).default(5),
-    name : Joi.string().optional(),
-    email : Joi.string().optional(),
-    phone : Joi.string().optional(),
-})
+	page: Joi.number().min(1).positive().default(1),
+	size: Joi.number().min(1).positive().max(100).default(5),
+	name: Joi.string().optional(),
+	email: Joi.string().optional(),
+	phone: Joi.string().optional(),
+});
 
 export {
-    createContactValidation,
-    getContactValidation,
-    updateContactValidation,
-    searchContactValidation
-}
+	createContactValidation,
+	getContactValidation,
+	updateContactValidation,
+	searchContactValidation,
+};

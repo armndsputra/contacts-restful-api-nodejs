@@ -163,13 +163,13 @@ const search = async (user, request) => {
 	});
 
 	return {
-		data : contacts,
-		paging : {
+		data: contacts,
+		paging: {
 			page: request.page,
 			total_items: totalItems,
 			total_page: Math.ceil(totalItems / request.size),
-		}
-	}
+		},
+	};
 };
 
 export default { create, get, update, remove, search };
