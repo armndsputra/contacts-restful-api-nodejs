@@ -9,7 +9,9 @@
 	"scripts": {
 		"test": " jest -i",
 		"dev": "nodemon src/main.js",
-		"start": "node src/main.js"
+		"start": "node src/main.js",
+		"prisma:generate": "prisma generate", 
+		"prisma:migrate": "prisma migrate deploy"
 	},
 	"jest": {
 		"transform": {

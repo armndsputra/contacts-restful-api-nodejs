@@ -7,3 +7,5 @@ Erros : Service ( ResponseError -> Middleware (Error-Middleware))
 testing -> remember the order of utils funtion
 
 npx prisma migrate dev
+npx prisma generate -> jika database sudah sesuai
+npx prisma studio -> melihat database

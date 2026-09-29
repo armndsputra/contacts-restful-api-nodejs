@@ -10,11 +10,11 @@
 {
  "name": "adipati suryanegara", // required
  "username": "adipati", // required
- "password": "rahasia",
+ "password": "rahasia", // required
 }
 ```
 
-Response Body Success :
+##### Response Body Success :
 
 ```json
 {
@@ -25,7 +25,7 @@ Response Body Success :
 }
 ```
 
-Response Body Error :
+##### Response Body Error :
 
 ```json
 {
@@ -35,32 +35,32 @@ Response Body Error :
 
 ## Login User API
 
-Endpoint : POST /api/login
+- **Endpoint** : `POST /api/login`
 
-Request Body :
+##### Request Body :
 
 ```json
 {
-	"username": "aplilmop",
-	"password": "rahasia"
+  "username": "adipati",
+  "password": "rahasia"
 }
 ```
 
-Response Body Success :
+##### Response Body Success :
 
 ```json
 {
-	"data": {
-		"token": "unique-token"
-	}
+  "data": {
+	"token": "unique-token"
+  }
 }
 ```
 
-Response Body Error :
+##### Response Body Error :
 
 ```json
 {
-	"errors": "Username or password wrong"
+  "errors": "Username or password wrong"
 }
 ```
 
