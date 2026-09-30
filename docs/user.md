@@ -4,7 +4,7 @@
 
 - **Endpoint** : `POST /api/register`
 
-##### Request Body :
+### Register User Request Body
 
 ```json
 {
@@ -14,7 +14,7 @@
 }
 ```
 
-##### Response Body Success :
+### Register User Response Body Success
 
 ```json
 {
@@ -25,7 +25,7 @@
 }
 ```
 
-##### Response Body Error :
+### Register User API Response Body Error
 
 ```json
 {
@@ -37,7 +37,7 @@
 
 - **Endpoint** : `POST /api/login`
 
-##### Request Body :
+### Login User Request Body
 
 ```json
 {
@@ -46,17 +46,17 @@
 }
 ```
 
-##### Response Body Success :
+### Login User Response Body Success
 
 ```json
 {
   "data": {
-	"token": "unique-token"
+   "token": "unique-token"
   }
 }
 ```
 
-##### Response Body Error :
+### Login User API Response Body Error
 
 ```json
 {
@@ -90,7 +90,7 @@ Response Body Success :
 }
 ```
 
-Response Body Error :
+Update User API Response Body Error :
 
 ```json
 {
@@ -116,7 +116,7 @@ Response Body Success :
 }
 ```
 
-Response Body Error :
+Get User API Response Body Error :
 
 ```json
 {
@@ -139,7 +139,7 @@ Response Body Success :
 }
 ```
 
-Response Body Error :
+Logout User API Response Body Error :
 
 ```json
 {
